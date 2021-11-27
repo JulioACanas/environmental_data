@@ -1,0 +1,13 @@
+---
+title: "Julio's Project Homepage"
+author: "Julio A Canas"
+date: "11/27/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Welcome to Juio's class page!
+
