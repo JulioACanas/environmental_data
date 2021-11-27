@@ -1,0 +1,28 @@
+---
+title: "R Markdown Documents - Part 1"
+subtitle: "Analysis of Environmental Data"
+author: Julio Alexander Canas Reyes
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+# Introduction
+**Julio Alexander Canas Reyes**
+
+*I am a first year Graduate Environmental Conservation Student in Water, Wetland and Watershed Concentration.*
+
+# Concept List
+Create numbered list with 2 - 4 concepts you want to learn in this course:
+
+* R, RStudio and Markdown
+* Analysis of environmental data
+* Model and critical thinking
+
+# Course List
+Create a bullet-point list containing 2 - 4 of the favorite courses you’ve taken so far:
+
+1. Analysis of Environmental Data
+2. Forest and Hydrology
+3. Damn Removal
