@@ -137,6 +137,8 @@ nrow(ginkgo)
 # The ncol() function returns the number of columns in your object.
 ncol(ginkgo)
 
+#The dim( ) function can  create a matrix from a vector by setting its dimension 
+dim(ginkgo)
 ```
 
 ## Subsetting
@@ -209,5 +211,152 @@ Standard deviation in R is a statistic that measures the amount of dispersion or
 sd(ginkgo$max_width)
 ```
 
+## Graphical Data Exploration
 
-...
+### scatterplot( )
+
+Scatterplot: Using the ginkgo data, reate a scatterplot of max leaf depth (x) and max leaf width (y).
+You can personalize your plot with the following commands:
+
+* col: defines color of the plots in the scatterplot.
+* pch: defines the point symbols in the functions plot() and lines(). The pch stands for plot character.  The pch contains numeric values rangers from 0 to 25 or character symbols (“+”, “.”, “;”, etc.) specifying in symbols (or shapes).
+* cex: defines a number indicating the amount by which plotting text and symbols should be scaled relative to the default.
+* main: defines the title of the plot
+* xlab: defines the name of the x axis in the plot
+* ylab: defines the name of the y axis in the plot
+* xlim: defines the limits of the scale in the x axis
+* ylim: defines the limits of the scale in the y axis
+
+```{r}
+#Let's plot the maximum depth and width of the ginkgo data frame
+plot(ginkgo$max_depth, ginkgo$max_width,
+     col="red",
+     pch=0, #2 stands for squares
+     cex=1, #we won't increase the size for better observation of the plots
+     main="Ginkgo Max depth vs Max width",
+     xlab="Ginkgo max_depth",
+     ylab="Ginkgo max_width",
+     # xlimit=c(0,160), (we won't include it because of the warnings to be displayed)
+     # ylimit=c(0,140) (we won't include it because of the warnings to be displayed)
+     )
+```
+
+### hist( )
+
+The generic function hist computes a histogram of the given data values. If plot = TRUE, the resulting object of class "histogram" is plotted by plot.histogram, before it is returned.
+
+You can personalize your plot with the following commands:
+* breaks: a single number giving the number of cells for the histogram.
+
+```{r}
+#Let's make a histogram of the penguin Adelie flipper lengths from the palmerpenguins data
+hist(dat_adelie$flipper_length_mm,
+     breaks=8,
+     main="Histogram of Adelie's flipper lengths",
+     xlab="Adelie flipper lenght (mm)")
+```
+
+### boxplot( )
+
+In R, boxplot  (and whisker plot) is created using the boxplot() function. The boxplot() function takes in any number of numeric vectors, drawing a boxplot for each vector.
+
+```{r}
+#To create a boxplot we can use:
+boxplot(ginkgo$petiole_length,
+        main="Boxplot of ginkgos's petiole lenght",
+        ylab="Petiole lenght (mm)")
+
+#To create a conditional boxplot we can use:
+boxplot(ginkgo$petiole_length~ginkgo$seeds_present,
+        main="Boxplot of ginkgos's petiole length with seed presence",
+        xlab="Seeds present (F or T)",
+        ylab="etiole length (mm)")
+```
+
+### Par( )
+
+You can use the par() function in R to create multiple plots at once.
+
+```{r}
+#Now we can plot every graph we had made so far in a single plot
+par(mfrow=c(2,2))
+plot(ginkgo$max_depth, ginkgo$max_width,
+     col="red",
+     pch=0, #2 stands for squares
+     cex=1, #we won't increase the size for better observation of the plots
+     main="Ginkgo Max depth vs Max width",
+     xlab="Ginkgo max_depth",
+     ylab="Ginkgo max_width",
+     # xlimit=c(0,160), (we won't include it because of the warnings to be displayed)
+     # ylimit=c(0,140) (we won't include it because of the warnings to be displayed)
+     )
+hist(dat_adelie$flipper_length_mm,
+     breaks=8,
+     main="Histogram of Adelie's flipper lengths",
+     xlab="Adelie flipper lenght (mm)")
+boxplot(ginkgo$petiole_length,
+        main="Boxplot of ginkgos's petiole lenght",
+        ylab="Petiole lenght (mm)")
+boxplot(ginkgo$petiole_length~ginkgo$seeds_present,
+        main="Boxplot of ginkgos's petiole length with seed presence",
+        xlab="Seeds present (F or T)",
+        ylab="etiole length (mm)")
+```
+
+## Distribution function
+
+### dnorm( )
+
+The function dnorm returns the value of the probability density function (pdf) of the normal distribution given a certain random variable x, a population mean μ and population standard deviation σ. The syntax for using dnorm is as follows: dnorm(x, mean, sd) 
+
+```{r}
+#Calculate the probability of a normal distribution with x=5, mean=20 and sd=2
+dnorm(x=5, mean=20, sd=2)
+```
+
+### pnorm( )
+
+The function pnorm returns the value of the cumulative density function (cdf) of the normal distribution given a certain random variable q, a population mean μ and population standard deviation σ. The syntax for using pnorm is as follows: pnorm(q, mean, sd) 
+
+```{r}
+#Calculate the percentage of females heavier than 50 pounds with a mean of 45 and a sd of 5
+pnorm(50, mean=42, sd=5)
+```
+
+### qnorm( )
+
+The function qnorm returns the value of the inverse cumulative density function (cdf) of the normal distribution given a certain random variable p, a population mean μ and population standard deviation σ. The syntax for using qnorm is as follows: qnorm(p, mean, sd)
+
+```{r}
+#Find the Z-score of the 89th quantile of the standard normal distribution 
+qnorm(0.89, mean=0, sd=1)
+```
+
+### dbinom( )
+
+The function dbinom returns the value of the probability density function (pdf) of the binomial distribution given a certain random variable x, number of trials (size) and probability of success on each trial (prob). The syntax for using dbinom is as follows: dbinom(x, size, prob) 
+
+```{r}
+# Calculate the probability of a 15 success during 20 trials where the probability of success is 0.64
+dbinom(x=15, size=20, prob=0.64)
+```
+
+### pbinom( )
+
+The function pbinom returns the value of the cumulative density function (cdf) of the binomial distribution given a certain random variable q, number of trials (size) and probability of success on each trial (prob). The syntax for using pbinom is as follows: pbinom(q, size, prob) 
+
+```{r}
+#Calculate the probability of 5 or fewer success during a 9 trials where the probability of success is 0.47
+pbinom(5, size=9, prob=0.47)
+```
+
+### qbinom( )
+
+The function qbinom returns the value of the inverse cumulative density function (cdf) of the binomial distribution given a certain random variable q, number of trials (size) and probability of success on each trial (prob). The syntax for using qbinom is as follows: qbinom(q, size, prob) 
+
+```{r}
+#Find the 58th quartile of a binomial distribution with 45 trials and probability of success of 0.3
+qbinom(0.58, size=45, prob=0.3)
+```
+
+```
