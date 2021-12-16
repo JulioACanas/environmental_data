@@ -1,0 +1,213 @@
+---
+title: "Final Project"
+author: "Julio A Canas"
+date: "12/2/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# R Reference Guide {.tabset .tabset-pills}
+
+
+## Loading Data and Packages
+
+### here( ), library and require
+
+The here package enables easy file referencing by using the top-level directory of a file project to easily build file paths. here() uses a reasonable heuristics to find your project's files, based on the current working directory at the time when the package is loaded. Also, to load and attach add-on packages "library" and "require" are needed. 
+
+library(package) and require(package) both load the namespace of the package with name package and attach it on the search list. require is designed for use inside other functions; it returns FALSE and gives a warning (rather than an error as library() does by default) if the package does not exist. Both functions check and update the list of currently attached packages and do not reload a namespace which is already loaded.
+
+An example of how to load packages are here and palmerpenguins, note that you load them different:
+```{r}
+#here will display your top-level directory
+library("here")
+require("here")
+
+#palmerpenguins will load the palmerpenguins package
+library(palmerpenguins)
+require(palmerpenguins)
+
+```
+
+### read.csv( )
+
+This code reads a file in table format and creates a data frame from it, with cases corresponding to lines and variables to fields in the file. Most of the time, you will also need the previous information of here(), library and require in order to load the correct document.
+
+```{r}
+library("here")
+require("here")
+here()
+
+#To load the information in the csv to the data frame named ginko, from the top-level directory
+ginkgo=read.csv(here("data","ginkgo_data_2021.csv"))
+
+#To obtain information of the data frame we use head() and summary()
+head(ginkgo)
+summary(ginkgo)
+```
+
+## Data Structures
+
+### c( )
+The function c() combines or concatenates its arguments into a vector (a 1-dimensional data structure consisting of 1 or more elements).
+
+* All of the elements must be of the same type.
+  * I can’t combine character and numeric types in the same call to c()
+
+Here’s two examples using numeric and character data types:
+```{r}
+## Create a vector of numbers:
+num_vec  = c(1, 4, 8, 9, 13)
+
+## Create a vector of characters:
+char_vec = c("a", "fish", "data is cool")
+```
+
+I can show the contents of a vector by typing the name of the vector, or using the print() function.
+```{r}
+## Typing the name of the vector into the console prints the contents
+num_vec
+```
+
+```{r}
+## The print() function accomplishes the same task:
+print(char_vec)
+```
+
+### length( )
+
+Get or set the length of vectors (including lists) and factors, and of any other R object for which a method has been defined.
+
+Let's use the vectors of the c() section:
+```{r}
+#Remember that num_vec  = c(1, 4, 8, 9, 13) is a 5 element vector
+length(num_vec)
+
+#Remember that char_vec = c("a", "fish", "data is cool") is a 3 element vector
+length(char_vec)
+```
+
+### matrix( )
+
+A matrix is a two dimensional data structure in R programming. 
+
+Matrix can be created using the matrix() function. Dimension of the matrix can be defined by passing appropriate value for arguments nrow (number of rows) and ncol (number of columns).
+
+Providing value for both dimension is not necessary. If one of the dimension is provided, the other is inferred from length of the data. Also, we can see that the matrix is filled column-wise, this can be reversed to row-wise filling by passing TRUE to the argument byrow.
+
+```{r}
+#Different value arragements in a matrix with the same values and typing
+matrix(1:12, nrow=4, ncol=3, byrow=TRUE) #or matrix(1:12, nrow=4, byrow=TRUE)
+
+matrix(1:12, nrow=4, ncol=3, byrow=FALSE) #or matrix(1:12, nrow=4, byrow=FALSE)
+
+matrix(1:12, nrow=3, ncol=4, byrow=TRUE) #or matrix(1:12, nrow=3, , byrow=TRUE)
+
+matrix(1:12, nrow=3, ncol=4, byrow=FALSE) #or matrix(1:12, nrow=3, byrow=FALSE)
+```
+
+Finally, you can also create a matrix from a vector by setting its dimension using dim(). The first number in the dim() output is the number of rows, and the second number of the number of columns.
+```{r}
+x<-c(1,2,3,4,5,6,7,8,9,10)
+dim(x)<-c(2,5)
+x
+```
+
+
+### data.frame( )
+
+The function data.frame() creates data frames, tightly coupled collections of variables which share many of the properties of matrices and of lists, used as the fundamental data structure by most of R's modeling software.
+
+```{r}
+#You can use a vector from the c ( ) section and add more information (as long as there are vectors with the same amount of elements as the one used or you will have an error)
+my.frame<-data.frame(num_vec, abc_vec=c("A", "B", "C", "D", "E"))
+
+my.frame #to print the data.frame
+```
+
+### Examples
+
+```{r}
+#The nrow() function returns the number of rows in your object.
+nrow(ginkgo)
+
+# The ncol() function returns the number of columns in your object.
+ncol(ginkgo)
+
+```
+
+## Subsetting
+
+### $
+
+The $ operator is used to extract or subset a specific part of a data object in R. For instance, this can be a data frame object or a list.
+
+```{r}
+#To get the subset of the first column of the ginkgo data we employ this code
+subset_ginkgo_site_id<-ginkgo$site_id
+subset_ginkgo_site_id
+```
+
+### [ ]
+
+Using the ‘[ ]’ operator, elements of vectors and observations from data frames can be accessed. To neglect some indexes, ‘-‘ is used to access all other indexes of vector or data frame. 
+
+```{r}
+#To show the first row we use [1,], this includes every column
+ginkgo[1,]
+
+#To show the element in the second row and third column we use
+ginkgo[3,2]
+
+#To show the third column we use [,3], this includes every value of the 756 rows in total
+ginkgo[,3]
+```
+
+### subset( )
+
+When looking to create more complex subsets or a subset based on a condition, the next step up is to use the subset() function.
+
+```{r}
+#First we need to upload the palmerpenguins in R
+require(palmerpenguins)
+
+#To etrieve all the data for Adelie penguins (in the species column) from the peuguins dataset we use
+dat_adelie = droplevels(subset(penguins, species == "Adelie"))
+dat_adelie
+```
+
+## Numerical Data Exploration
+
+### summary( )
+
+The summary() function in R can be used to quickly summarize the values in a vector, data frame, regression model, or ANOVA model in R.
+
+```{r}
+#Let's use summary() with the ginkgo data frame and da_adelie from palmerpenguins csv
+summary(ginkgo)
+summary(dat_adelie)
+```
+
+### mean( )
+
+The function mean() is used to calculate the mean of a set by taking the sum of the values and dividing with the number of values in a data series.
+
+```{r}
+#Let's use mean( ) with the subset of max_width ginkgo data frame (the function only works with numerical data)
+mean(ginkgo$max_width)
+```
+
+### sd( )
+
+Standard deviation in R is a statistic that measures the amount of dispersion or variation of a set of value, generally, it is used when we are dealing with values where we have to find the difference between the values and the mean.
+
+```{r}
+#Let's use mean( ) with the subset of max_width ginkgo data frame (the function only works with numerical data)
+sd(ginkgo$max_width)
+```
+
+
+...
